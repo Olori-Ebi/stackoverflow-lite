@@ -4,9 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "babel-node ./server/app.js",
-    "start:dev": "nodemon --exec babel-node ./server/app.js",
-    "connection": "babel-node ./server/database/poolConn.js",
+    "start": "nodemon --exec babel-node ./server/app.js",
     "lint": "eslint --init",
     "test": "nyc --reporter=lcov mocha --require @babel/register ./server/testing/questionTest.js --exit",
     "coverall": "./node_modules/.bin/nyc npm test && nyc report --reporter=text-lcov | coveralls"
