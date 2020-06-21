@@ -1,4 +1,3 @@
-// import uuid from 'uuid';
 import Questions from '../model/question';
 import Answers from '../model/answers';
 
