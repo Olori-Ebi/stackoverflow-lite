@@ -6,6 +6,7 @@
   "scripts": {
     "start": "babel-node ./server/app.js",
     "start:dev": "nodemon --exec babel-node ./server/app.js",
+    "table": "babel-node ./server/database/migration/index.js",
     "connection": "babel-node ./server/database/poolConn.js",
     "lint": "eslint --init",
     "test": "nyc --reporter=lcov mocha --require @babel/register ./server/testing/questionTest.js --exit",
