@@ -46,4 +46,25 @@ const userValidationRules = () => [
     .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s)/)
     .withMessage('password must contain at least one lowercase letter, one uppercase letter, one numeric digit, one special character and must be between 6 and 15 in length'),
 ];
-export default { validate, userValidationRules };
+
+const userLoginRules = () => [
+  check('email')
+    .notEmpty()
+    .withMessage('email field is required')
+    .trim()
+    .isEmail()
+    .withMessage('Invalid email address entered')
+    .customSanitizer((email) => email.toLowerCase()),
+  check('password')
+    .notEmpty()
+    .withMessage('Password is required')
+    .trim()
+    .isLength({ min: 6, max: 15 })
+    .withMessage('Password must be between 6 to 15 characters')
+    .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s)/)
+    .withMessage('password must contain at least one lowercase letter, one uppercase letter, one numeric digit, one special character and must be between 6 and 15 in length'),
+];
+
+export default {
+  validate, userValidationRules, userLoginRules,
+};
