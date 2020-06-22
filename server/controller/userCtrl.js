@@ -45,6 +45,37 @@ class UserController {
       console.log(error);
     }
   }
+
+  static login(req, res) {
+    const { email } = req.body;
+    const query = `SELECT * FROM users WHERE email = '${email}'`;
+    try {
+      pool.query(query, (err, result) => {
+        if (err) console.log(err);
+        if (!result.rows[0]) {
+          return res.status(400).json({
+            status: 400,
+            message: 'Please enter a valid email or password',
+          });
+        }
+        if (!helperUtils.comparePassword(req.body.password, result.rows[0].password)) {
+          return res.status(400).json({
+            status: 400,
+            message: 'Please enter a valid email or password',
+          });
+        }
+        const token = helperUtils.generateToken(result.rows[0]);
+        const { rows } = result;
+        return res.status(200).json({
+          status: 200,
+          data: { token, ...rows[0] },
+          message: 'Login successful',
+        });
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 
 export default UserController;
