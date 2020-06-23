@@ -1,59 +1,24 @@
-import Questions from '../model/question';
-import Answers from '../model/answers';
+import pool from '../database/poolConn';
 
 class questions {
-  static getAllQuestions(req, res) {
-    return res.send(Questions);
-  }
-
-  static getSingleQuestion(req, res) {
-    // Check if id exists
-    const found = Questions.some((Question) => Question.id === +(req.params.id));
-    if (found) {
-      res.send(Questions.filter((Question) => Question.id === +(req.params.id)));
-    } else {
-      return res.status(400).send({
-        msg: `no question with the id of ${req.params.id}`,
-      });
-    }
-  }
-
   static postQuestion(req, res) {
-    const newQuestion = {
-      id: req.body.id,
-      title: req.body.title,
-      body: req.body.body,
-    };
+    const { email } = req.user;
+    const { title, body } = req.body;
+    const createdon = new Date();
 
-    if (!newQuestion.title || !newQuestion.title || !newQuestion.body) {
-      return res.status(400).send({
-        msg: 'Please include an id, title and body',
-      });
-    }
-    Questions.push(newQuestion);
-    return res.send(Questions);
-  }
-
-  static postAnswer(req, res) {
-    const id = +(req.params.id);
-    const found = Questions.some((Question) => Question.id === id);
-
-    if (found) {
-      const newAnswer = {
-        id,
-        body: req.body.body,
-      };
-      if (!newAnswer.body) {
-        res.status(400).send({
-          msg: 'Body cannot be empty',
+    try {
+      const query = 'INSERT INTO questions(email, title, body, createdon) VALUES($1, $2, $3, $4) RETURNING *';
+      const values = [email, title, body, createdon];
+      pool.query(query, values, (err, result) => {
+        if (err) console.log(err);
+        return res.status(201).json({
+          status: 201,
+          data: result.rows[0],
+          message: 'Question asked successfully',
         });
-      }
-      Answers.push(newAnswer);
-      res.send(Answers);
-    } else {
-      return res.status(400).send({
-        msg: `no question with the id of ${req.params.id}`,
       });
+    } catch (error) {
+      console.log(error);
     }
   }
 }

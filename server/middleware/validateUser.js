@@ -5,8 +5,8 @@ const validate = (req, res, next) => {
   if (!errors.isEmpty()) {
     const extractedErrors = [];
     errors.array().map((err) => extractedErrors.push({ [err.param]: err.msg }));
-    return res.status(422).json({
-      status: 422,
+    return res.status(400).json({
+      status: 400,
       errors: extractedErrors,
     });
   }
