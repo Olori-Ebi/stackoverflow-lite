@@ -15,13 +15,12 @@ const questionTable = `
     email VARCHAR(255) REFERENCES users(email),
     title VARCHAR(100) NOT NULL,
     body VARCHAR(255) NOT NULL,
-    createdon TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE (email)
+    createdon TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );`;
 
 const answerTable = `
   CREATE TABLE IF NOT EXISTS answers(
-  questionId SERIAL PRIMARY KEY,
+  questionId SERIAL PRIMARY KEY, 
   answerId INTEGER NOT NULL,
   email VARCHAR(100) NOT NULL,
   body VARCHAR(255) NOT NULL,
